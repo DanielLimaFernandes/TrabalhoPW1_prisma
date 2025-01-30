@@ -15,15 +15,13 @@ class UpdatePetUC {
 
   async execute({ id, name, type, description, deadline_vaccination, petshopCNPJ  }: Params) {
 
-    //validação dos campus capf e name
+    console.log("entrou")
     const cnpj = petshopCNPJ;
+    console.log("cnpj: ",cnpj);
     const { DateTime } = require('luxon');
     const dataFormatada = DateTime.fromFormat(deadline_vaccination, 'dd/MM/yyyy').toISO();
     console.log(dataFormatada);
-    // faça um codigo aqui paraverificar se o tipo é debit e se for verificar 
-    //se tem saldo suficiente para realizar essa transação
 
-    ///validação verificando se o amount >0 já está cadastrrado
     const petUpdated = await prisma.pet.update({
       where: {
         id

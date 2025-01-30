@@ -7,32 +7,22 @@ class VacinatedPetController {
         const { id } = req.params;
         console.log(id)
 
-        const { cnpj } = req.headers;
-        console.log("cnpj: ", cnpj, " tipo: ", typeof cnpj)
+        const petshop = res.locals.petshop
+        const petshopCNPJ = petshop.cnpj;
 
-        if (typeof cnpj == 'string') {
+        console.log("petshop: ", petshop);
+        console.log("cnpj: ", petshopCNPJ);
 
+        const result = await VacinatedPetUC.execute({ id, petshopCNPJ });
 
-            const petshop = await prisma.petshop.findUnique({
-                where: { cnpj }
-            });
+        if (result.status !== 400) {
+            res.status(200).json({ result });
+         } else {
+            res.status(result.status).json({ error: result.message });
+         }
 
-            console.log("petshop: ", petshop);
-
-            if (!petshop) {
-                res.status(400).json({ error: 'Petshop não existente' });
-                return;
-            }
-            const petshopCNPJ = cnpj;
-            const result = await VacinatedPetUC.execute({ id, petshopCNPJ });
-
-
-
-            res.status(200).json(result);
-            return;
-
-        }
     }
 }
+
 
 export default new VacinatedPetController();

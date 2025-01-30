@@ -7,15 +7,16 @@ class RegisterPetController {
     const { name, type, description, deadline_vaccination } = req.body;
     console.log(name, type, description, deadline_vaccination)
     console.log(typeof deadline_vaccination)
-    const { cnpj } = req.headers;
-    
-    const petshopCNPJ = cnpj as string;
+    const petshop = res.locals.petshop
+    const petshopCNPJ = petshop.cnpj;
   
-    console.log(cnpj);
+    console.log("petshop: ", petshop);
+    console.log("cnpj: ", petshopCNPJ);
+    
     const result = await RegisterPet.execute({ name, type, description, deadline_vaccination, petshopCNPJ});
     
 
-    if (result.status !== 400) {
+    if (result.status !== 500) {
        res.status(200).json({ result });
     } else {
        res.status(result.status).json({ error: result.message });

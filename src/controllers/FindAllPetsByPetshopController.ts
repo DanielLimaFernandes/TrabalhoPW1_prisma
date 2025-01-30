@@ -6,31 +6,18 @@ class FindAllPetsByPetshopController {
 
 
   async handle(req: Request, res: Response) {
-    const { cnpj } = req.headers;
+    const petshop = res.locals.petshop
+    const cnpj = petshop.cnpj;
 
-     console.log("cnpj: ",cnpj," tipo: ", typeof cnpj)
-    if(typeof cnpj == 'string'){
-    
-  
-    const petshop = await prisma.petshop.findUnique({
-      where: { cnpj }
-    });
-
-    console.log("petshop: " , petshop);
-
-    if(!petshop){
-      res.status(400).json({ error: 'Petshop não existente' });
-      return;
-     stop;
-    }
+    console.log("petshop: ", petshop);
+    console.log("cnpj: ", cnpj);
    
-    console.log(cnpj);
     const Pet = await FindAllPetsByPetshopCaseUser.execute({ cnpj });
 
      res.status(200).json({Pet});
   }
 
   }
-}
+
 
 export default new FindAllPetsByPetshopController();
